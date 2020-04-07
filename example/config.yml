@@ -1,0 +1,15 @@
+# config
+
+data_root: d:/work/layout-dataset
+batch_size: 16
+max_epochs: 200
+lr: 0.001
+gpus: 1
+
+mean_layout: 5000
+std_layout: 10000
+
+mean_heat: 298
+std_heat: 2
+
+
