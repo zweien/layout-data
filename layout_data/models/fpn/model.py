@@ -107,7 +107,10 @@ class FPNModel(LightningModule):
 
         # param overwrites
         # parser.set_defaults(gradient_clip_val=5.0)
-
+        
+        # dataset args
+        parser.add_argument('--data_root', type=str, default='data')
+        
         # network params
         parser.add_argument('--drop_prob', default=0.2, type=float)
         parser.add_argument('--learning_rate', default=0.001, type=float)

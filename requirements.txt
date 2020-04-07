@@ -1,0 +1,6 @@
+tqdm
+configargparse>=1.2
+pyyaml>=5.3
+torch>=1.3
+torchvision>0.5
+pytorch-lightning>=0.7
