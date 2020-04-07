@@ -8,6 +8,7 @@ from layout_data.data.loadresponse import LoadResponse, mat_loader
 from layout_data.utils.np_transforms import Compose, Resize, ToTensor, Normalize
 from sklearn.model_selection import train_test_split
 
+
 def generate_data(dir_path, num, shape):
     for i in range(num):
         u = np.random.randn(*shape)
@@ -34,7 +35,7 @@ def test_LoadResponse(tmp_path):
                            target_transform=trms)
     assert len(dataset) == num
 
-    data_train, data_val = train_test_split(dataset, train_size=0.8) # train/val data split 
+    data_train, data_val = train_test_split(dataset, train_size=0.8)  # train/val data split
 
     assert len(data_train) == 8
     assert len(data_val) == 2
@@ -45,4 +46,3 @@ def test_LoadResponse(tmp_path):
     assert load.shape == (1,) + converted_shape
     assert resp.shape == (1,) + converted_shape
     assert abs(load.mean().item() + 0.5) < 0.1  # test mean
-

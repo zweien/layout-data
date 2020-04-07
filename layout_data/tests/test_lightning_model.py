@@ -1,19 +1,23 @@
 import pytest
+import math
 from argparse import ArgumentParser
-import pytorch_lightning as pl
 from layout_data.models.fpn.model import FPNModel
+
 
 def test_fpn_lightning():
     parser = ArgumentParser()
-    parser = FPNModel.add_model_specific_args()
+    parser = FPNModel.add_model_specific_args(parser)
     hparams = parser.parse_args()
+    hparams.gpus = 1
+    hparams.data_root = 'd:/work/layout-dataset'
 
     model = FPNModel(hparams)
-    trainer = pl.Trainer(
-        max_epochs=hparams.max_epochs,
-        gpus=hparams.gpus,
-        distributed_backend=hparams.distributed_backend,
-        precision=16 if hparams.use_16bit else 32,
-    )
+    model.prepare_data()
 
-    # trainer.fit(model)
+    dataloader = model.train_dataloader()
+
+    F, u = next(iter(dataloader))
+    u_pred = model(F)
+    assert u_pred.shape == (hparams.batch_size, 1, 200, 200)
+
+    assert not math.isnan(u_pred.sum().item())

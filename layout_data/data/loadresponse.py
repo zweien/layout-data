@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-'''
+"""
 Desc      :   Load Response Dataset.
-'''
+"""
 # File    :   loadresponse.py
 # Time    :   2020/04/06 17:24:13
 # Author  :   Zweien
@@ -10,7 +10,6 @@ Desc      :   Load Response Dataset.
 
 import os
 import scipy.io as sio
-from torch.utils.data import Dataset
 from torchvision.datasets import VisionDataset
 
 
@@ -43,11 +42,11 @@ class LoadResponse(VisionDataset):
         return len(self.sample_files)
 
 
-def make_dataset(dir, extensions=None, is_valid_file=None):
+def make_dataset(root_dir, extensions=None, is_valid_file=None):
     """make_dataset() from torchvision.
     """
     files = []
-    dir = os.path.expanduser(dir)
+    root_dir = os.path.expanduser(root_dir)
     if not ((extensions is None) ^ (is_valid_file is None)):
         raise ValueError(
             "Both extensions and is_valid_file cannot be None or not None at the same time")
@@ -55,13 +54,12 @@ def make_dataset(dir, extensions=None, is_valid_file=None):
         def is_valid_file(x):
             return has_allowed_extension(x, extensions)
 
-    assert os.path.isdir(dir)
-    for root, _, fnames in sorted(os.walk(dir, followlinks=True)):
-        for fname in sorted(fnames):
-            path = os.path.join(root, fname)
+    assert os.path.isdir(root_dir)
+    for root, _, fns in sorted(os.walk(root_dir, followlinks=True)):
+        for fn in sorted(fns):
+            path = os.path.join(root, fn)
             if is_valid_file(path):
                 files.append(path)
-
     return files
 
 

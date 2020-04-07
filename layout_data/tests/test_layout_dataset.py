@@ -15,10 +15,9 @@ def generate_data(dir_path, num, shape):
         for i in range(num):
             u = np.random.randn(*shape)
             F = np.random.randn(*shape)
-            
+
             path = os.path.join(subdir_path, f'{i}.mat')
             sio.savemat(path, {'u': u, 'F': F})
-        
 
 
 def test_layout_dataset(tmp_path):
@@ -36,8 +35,8 @@ def test_layout_dataset(tmp_path):
         Normalize(torch.tensor([0.5]), torch.tensor([1.])),
     ])
     dataset = LayoutDataset(tmp_path, train=True,
-                           transform=trms,
-                           target_transform=trms)
+                            transform=trms,
+                            target_transform=trms)
     assert len(dataset) == num
 
     load, resp = dataset[0]

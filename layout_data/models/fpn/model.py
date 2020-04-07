@@ -1,18 +1,14 @@
 # encoding: utf-8
 
 import math
-from collections import OrderedDict
-from argparse import ArgumentParser
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
+import torchvision
 from .fpn_head import FPNDecoder
 from .resnet import resnet50
 from ..scheduler import WarmupMultiStepLR
-from ..focalloss import FocalLoss
 from pytorch_lightning import LightningModule
-import logging
 from layout_data.data.layout import LayoutDataset
 import layout_data.utils.np_transforms as transforms
 from sklearn.model_selection import train_test_split
@@ -23,7 +19,10 @@ class FPNModel(LightningModule):
         super().__init__()
         self.hparams = hparams
         self._build_model()
-        self.criterion = FocalLoss()
+        self.criterion = nn.L1Loss()
+        self.train_dataset = None
+        self.val_dataset = None
+        self.test_dataset = None
 
     def _build_model(self):
         self.backbone = resnet50()
@@ -46,23 +45,29 @@ class FPNModel(LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams.lr)
         scheduler = WarmupMultiStepLR(optimizer, milestones=[],
-                                      warmup_iters=math.ceil(len(self.train_dataset)/self.hparams.batch_size))
+                                      warmup_iters=math.ceil(len(self.train_dataset) / self.hparams.batch_size))
         return [optimizer], [scheduler]
 
     def prepare_data(self):
         """Prepare dataset
         """
         size: int = self.hparams.input_size
-        transform = transforms.Compose([
+        transform_layout = transforms.Compose([
             transforms.Resize(size=(size, size)),
             transforms.ToTensor(),
             transforms.Normalize(torch.tensor(
-                [self.hparams.mean]), torch.tensor([self.hparams.std])),
+                [self.hparams.mean_layout]), torch.tensor([self.hparams.std_layout])),
+        ])
+        transform_heat = transforms.Compose([
+            transforms.Resize(size=(size, size)),
+            transforms.ToTensor(),
+            transforms.Normalize(torch.tensor(
+                [self.hparams.mean_heat]), torch.tensor([self.hparams.std_heat])),
         ])
         train_dataset = LayoutDataset(
-            self.hparams.data_root, train=True, transform=transform, target_transform=transform)
+            self.hparams.data_root, train=True, transform=transform_layout, target_transform=transform_heat)
         test_dataset = LayoutDataset(
-            self.hparams.data_root, train=True, transform=transform, target_transform=transform)
+            self.hparams.data_root, train=False, transform=transform_layout, target_transform=transform_heat)
 
         # train/val split
         train_dataset, val_dataset = train_test_split(
@@ -74,49 +79,75 @@ class FPNModel(LightningModule):
         self.test_dataset = test_dataset
 
     def train_dataloader(self):
-        logging.info('Training data loader called.')
         return self.__dataloader(self.train_dataset)
 
     def val_dataloader(self):
-        logging.info('Validation data loader called.')
+
         return self.__dataloader(self.val_dataset)
 
     def test_dataloader(self):
-        logging.info('Test data loader called.')
         return self.__dataloader(self.test_dataset)
 
-
     def training_step(self, batch, batch_idx):
-        F, u = batch
-        u_pred = self(F)
-        loss = self.criterion(u, u_pred)
+        layout, heat = batch
+        heat_pred = self(layout)
+        loss = self.criterion(heat, heat_pred)
         log = {'training_loss': loss}
         return {'loss': loss, 'log': log}
 
+    def validation_step(self, batch, batch_idx):
+        layout, heat = batch
+        heat_pred = self(layout)
+        loss = self.criterion(heat, heat_pred)
 
+        # pred heat field
+        grid = torchvision.utils.make_grid(heat_pred[:4, ...])
+        self.logger.experiment.add_image('pred_heat_field', grid, self.global_step)
 
-    def validation_step(self, *args, **kwargs):
-        pass
+        # true heat field
+        if self.global_step == 0:
+            grid = torchvision.utils.make_grid(heat[:4, ...])
+            self.logger.experiment.add_image('heat_field', grid, self.global_step)
+
+        log = {'val_loss': loss}
+        return {'val_loss': loss, 'log': log}
+
+    def validation_epoch_end(self, outputs):
+        val_loss_mean = torch.stack([x['val_loss'] for x in outputs]).mean()
+        log = {'val_loss': val_loss_mean}
+        return {'val_loss': val_loss_mean, 'log': log}
+
+    def test_step(self, batch, batch_idx):
+        layout, heat = batch
+        heat_pred = self(layout)
+        loss = self.criterion(heat, heat_pred)
+        return {'test_loss': loss}
+
+    def test_epoch_end(self, outputs):
+        test_loss_mean = torch.stack([x['test_loss'] for x in outputs]).mean()
+        log = {'test_loss': test_loss_mean}
+        return {'test_loss': test_loss_mean, 'log': log}
 
     @staticmethod
     def add_model_specific_args(parent_parser):  # pragma: no-cover
         """
         Parameters you define here will be available to your model through `self.hparams`.
         """
-        parser = ArgumentParser(parents=[parent_parser])
-
+        # parser = ArgumentParser(parents=[parent_parser])
+        parser = parent_parser
         # param overwrites
         # parser.set_defaults(gradient_clip_val=5.0)
-        
+
         # dataset args
         parser.add_argument('--data_root', type=str, default='data')
-        
+
         # network params
         parser.add_argument('--drop_prob', default=0.2, type=float)
-        parser.add_argument('--learning_rate', default=0.001, type=float)
         parser.add_argument('--input_size', default=200, type=int)
-        parser.add_argument('--mean', default=0, type=float)
-        parser.add_argument('--std', default=1, type=float)
+        parser.add_argument('--mean_layout', default=0, type=float)
+        parser.add_argument('--std_layout', default=1, type=float)
+        parser.add_argument('--mean_heat', default=0, type=float)
+        parser.add_argument('--std_heat', default=1, type=float)
 
         # training params (opt)
         parser.add_argument('--max_epochs', default=20, type=int)

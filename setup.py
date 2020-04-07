@@ -2,8 +2,8 @@ import os
 from setuptools import setup, find_packages
 import layout_generator.about as about
 
-
 here = os.path.abspath(os.path.dirname(__file__))
+
 
 def load_requirements(path_dir=here, comment_char='#'):
     with open(os.path.join(path_dir, 'requirements.txt'), 'r') as file:
@@ -16,6 +16,7 @@ def load_requirements(path_dir=here, comment_char='#'):
         if line:  # if requirement is not empty
             requirements.append(line)
     return requirements
+
 
 setup(
     name="layout-data",

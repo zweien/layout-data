@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+
 class FocalLoss(nn.Module):
     def __init__(self, gamma=2, alpha=0.25):
         super(FocalLoss, self).__init__()

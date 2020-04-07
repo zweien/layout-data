@@ -8,7 +8,6 @@ Desc      :   About layout-data.
 # Contact :   278954153@qq.com
 
 
-
 __version__ = '0.0.1'
 __author__ = 'Zweien'
 __licence__ = 'MIT'

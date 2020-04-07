@@ -1,2 +1,6 @@
 __pycache__
-
+*.egg-info
+*lightning_logs*
+.idea
+.vscode
+.pytest_cache

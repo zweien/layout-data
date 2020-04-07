@@ -22,6 +22,7 @@ class ToTensor():
     Returns:
         torch.tensor: tensor
     """
+
     def __init__(self, add_dim=True, type_=torch.float32):
 
         self.add_dim = add_dim
