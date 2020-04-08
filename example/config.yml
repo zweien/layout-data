@@ -1,11 +1,11 @@
 # config
 
 data_root: d:/work/dataset
-batch_size: 32
-max_epochs: 200
+batch_size: 64
+max_epochs: 2
 lr: 0.001
 gpus: 1
-val_check_interval: 1
+val_check_interval: 1.0
 
 mean_layout: 5000
 std_layout: 10000
@@ -13,4 +13,5 @@ std_layout: 10000
 mean_heat: 298
 std_heat: 2
 
+save_path: 
 

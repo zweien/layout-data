@@ -99,6 +99,14 @@ class FPNModel(LightningModule):
         heat_pred = self(layout)
         loss = self.criterion(heat, heat_pred)
         log = {'training_loss': loss}
+
+        if batch_idx == 0:
+            grid = torchvision.utils.make_grid(heat_pred[:4, ...], normalize=True)
+            self.logger.experiment.add_image('train_pred_heat_field', grid, self.global_step)
+            if self.global_step == 0:
+                grid = torchvision.utils.make_grid(heat[:4, ...], normalize=True)
+                self.logger.experiment.add_image('train_heat_field', grid, self.global_step)
+
         return {'loss': loss, 'log': log}
 
     def validation_step(self, batch, batch_idx):
@@ -108,17 +116,17 @@ class FPNModel(LightningModule):
 
         # pred heat field
         grid = torchvision.utils.make_grid(heat_pred[:4, ...], normalize=True)
-        self.logger.experiment.add_image('pred_heat_field', grid, self.global_step)
+        self.logger.experiment.add_image('val_pred_heat_field', grid, self.global_step)
 
         # true layoutand heat field
-        if self.global_step == 0:
-            grid = torchvision.utils.make_grid(layout[:4, ...], normalize=True)
-            self.logger.experiment.add_image('layout_field', grid, self.global_step)
+        if self.global_step == 0 and batch_idx == 0:
             grid = torchvision.utils.make_grid(heat[:4, ...], normalize=True)
-            self.logger.experiment.add_image('heat_field', grid, self.global_step)
+            self.logger.experiment.add_image('val_heat_field', grid, self.global_step)
 
-        log = {'val_loss': loss}
-        return {'val_loss': loss, 'log': log}
+            grid = torchvision.utils.make_grid(layout[:4, ...], normalize=True)
+            self.logger.experiment.add_image('val_layout_field', grid, self.global_step)
+            
+        return {'val_loss': loss}
 
     def validation_epoch_end(self, outputs):
         val_loss_mean = torch.stack([x['val_loss'] for x in outputs]).mean()

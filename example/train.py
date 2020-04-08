@@ -3,9 +3,10 @@ Runs a model on a single node across multiple gpus.
 """
 import os
 from argparse import ArgumentParser
+import configargparse
 import numpy as np
 import torch
-
+from torch.backends import cudnn
 import pytorch_lightning as pl
 
 from layout_data.models.fpn.model import FPNModel
@@ -16,8 +17,9 @@ def main(hparams):
     Main training routine specific for this project
     """
     seed = hparams.seed
-    torch.manual_seed(seed)
     np.random.seed(seed)
+    torch.manual_seed(seed)
+    cudnn.deterministic = True
 
     # ------------------------
     # 1 INIT LIGHTNING MODEL
@@ -33,10 +35,15 @@ def main(hparams):
         val_check_interval=hparams.val_check_interval
     )
 
+    
     # ------------------------
     # 3 START TRAINING
     # ------------------------
+    print(hparams)
+    print()
     trainer.fit(model)
+
+    trainer.test()
 
 
 if __name__ == '__main__':
