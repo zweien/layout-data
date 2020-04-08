@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 import torchvision
 from .fpn_head import FPNDecoder
 from .resnet import resnet50
+from .model_init import weights_init
 from ..scheduler import WarmupMultiStepLR
 from pytorch_lightning import LightningModule
 from layout_data.data.layout import LayoutDataset
@@ -27,6 +28,7 @@ class FPNModel(LightningModule):
     def _build_model(self):
         self.backbone = resnet50()
         self.head = FPNDecoder(encoder_channels=[2048, 1024, 512, 256])
+        self.backbone.apply(weights_init)
 
     def forward(self, x):
         x = self.backbone(x)
@@ -70,8 +72,12 @@ class FPNModel(LightningModule):
             self.hparams.data_root, train=False, transform=transform_layout, target_transform=transform_heat)
 
         # train/val split
-        train_dataset, val_dataset = train_test_split(
-            train_dataset, train_size=self.hparams.train_size)
+        train_size = int(self.hparams.train_size * len(train_dataset))
+        lengths = [train_size, len(train_dataset) - train_size]
+        train_dataset, val_dataset = torch.utils.data.random_split(
+            train_dataset, lengths)
+
+        print(f'Prepared dataset, train:{len(train_dataset)}, val:{len(val_dataset)}, test:{len(test_dataset)}')
 
         # assign to use in dataloaders
         self.train_dataset = train_dataset
@@ -101,12 +107,14 @@ class FPNModel(LightningModule):
         loss = self.criterion(heat, heat_pred)
 
         # pred heat field
-        grid = torchvision.utils.make_grid(heat_pred[:4, ...])
+        grid = torchvision.utils.make_grid(heat_pred[:4, ...], normalize=True)
         self.logger.experiment.add_image('pred_heat_field', grid, self.global_step)
 
-        # true heat field
+        # true layoutand heat field
         if self.global_step == 0:
-            grid = torchvision.utils.make_grid(heat[:4, ...])
+            grid = torchvision.utils.make_grid(layout[:4, ...], normalize=True)
+            self.logger.experiment.add_image('layout_field', grid, self.global_step)
+            grid = torchvision.utils.make_grid(heat[:4, ...], normalize=True)
             self.logger.experiment.add_image('heat_field', grid, self.global_step)
 
         log = {'val_loss': loss}
@@ -139,7 +147,7 @@ class FPNModel(LightningModule):
         # parser.set_defaults(gradient_clip_val=5.0)
 
         # dataset args
-        parser.add_argument('--data_root', type=str, default='data')
+        parser.add_argument('--data_root', type=str, default='d:/work/dataset')
 
         # network params
         parser.add_argument('--drop_prob', default=0.2, type=float)

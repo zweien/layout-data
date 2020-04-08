@@ -10,6 +10,7 @@ Desc      :   Load Response Dataset.
 
 import os
 import scipy.io as sio
+import tqdm
 from torchvision.datasets import VisionDataset
 
 
@@ -54,7 +55,7 @@ def make_dataset(root_dir, extensions=None, is_valid_file=None):
         def is_valid_file(x):
             return has_allowed_extension(x, extensions)
 
-    assert os.path.isdir(root_dir)
+    assert os.path.isdir(root_dir), root_dir
     for root, _, fns in sorted(os.walk(root_dir, followlinks=True)):
         for fn in sorted(fns):
             path = os.path.join(root, fn)
