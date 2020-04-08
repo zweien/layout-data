@@ -73,7 +73,13 @@ if __name__ == '__main__':
         default=0,
         help='how many gpus'
     )
-
+    parser.add_argument(
+        '--use_16bit',
+        type=bool,
+        default=False,
+        help='use 16bit precision'
+    )
+    
     parser.add_argument(
         '--use_16bit',
         action='store_true',
