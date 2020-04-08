@@ -82,7 +82,6 @@ class FPNModel(LightningModule):
         return self.__dataloader(self.train_dataset)
 
     def val_dataloader(self):
-
         return self.__dataloader(self.val_dataset)
 
     def test_dataloader(self):
@@ -102,15 +101,15 @@ class FPNModel(LightningModule):
 
         # pred heat field
         grid = torchvision.utils.make_grid(heat_pred[:4, ...])
-        self.logger.experiment.add_image('pred_heat_field', grid, self.global_step)
+        self.logger.experiment.add_image(
+            'pred_heat_field', grid, self.global_step)
 
         # true heat field
         if self.global_step == 0:
             grid = torchvision.utils.make_grid(heat[:4, ...])
-            self.logger.experiment.add_image('heat_field', grid, self.global_step)
-
-        log = {'val_loss': loss}
-        return {'val_loss': loss, 'log': log}
+            self.logger.experiment.add_image(
+                'heat_field', grid, self.global_step)
+        return {'val_loss': loss}
 
     def validation_epoch_end(self, outputs):
         val_loss_mean = torch.stack([x['val_loss'] for x in outputs]).mean()
@@ -129,17 +128,16 @@ class FPNModel(LightningModule):
         return {'test_loss': test_loss_mean, 'log': log}
 
     @staticmethod
-    def add_model_specific_args(parent_parser):  # pragma: no-cover
+    def add_model_specific_args(parser):  # pragma: no-cover
         """
         Parameters you define here will be available to your model through `self.hparams`.
         """
-        # parser = ArgumentParser(parents=[parent_parser])
-        parser = parent_parser
-        # param overwrites
-        # parser.set_defaults(gradient_clip_val=5.0)
+        parser = parser
 
         # dataset args
         parser.add_argument('--data_root', type=str, default='data')
+        parser.add_argument('--train_size', default=0.8,
+                            type=float, help='train_size in train_test_split')
 
         # network params
         parser.add_argument('--drop_prob', default=0.2, type=float)
@@ -154,6 +152,5 @@ class FPNModel(LightningModule):
         parser.add_argument('--optimizer_name', default='adam', type=str)
         parser.add_argument('--lr', default='0.01', type=float)
         parser.add_argument('--batch_size', default=16, type=int)
-        parser.add_argument('--train_size', default=0.8,
-                            type=float, help='train_size in train_test_split')
+        
         return parser
