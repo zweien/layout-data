@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages
-import layout_generator.about as about
+import layout_data.about as about
 
 here = os.path.abspath(os.path.dirname(__file__))
 
