@@ -1,6 +1,6 @@
 # layout-data
 
-[layout-generator](https://git.idrl.site/idrl/layout-generator) 生成数据集配套 Dataset 封装，包含 pytorch-lightning 封装的 FPN 模型，可以方便的配置参数。
+[layout-generator](https://git.idrl.site/idrl/layout-generator) 生成数据集配套 Dataset 封装，包含 [pytorch-lightning](https://github.com/PytorchLightning/pytorch-lightning) 封装的 FPN 模型，可以方便的配置参数。
 
 
 - [x] LoadResponse
