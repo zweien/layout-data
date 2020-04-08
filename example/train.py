@@ -79,12 +79,6 @@ if __name__ == '__main__':
         default=False,
         help='use 16bit precision'
     )
-    
-    parser.add_argument(
-        '--use_16bit',
-        action='store_true',
-        help='use 16 bit precision'
-    )
 
     parser.add_argument(
         '--val_check_interval',
