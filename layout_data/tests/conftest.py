@@ -4,6 +4,7 @@ import numpy as np
 import os
 import scipy.io as sio
 
+
 @pytest.fixture(scope='session')
 def prepare_data_path(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("data")

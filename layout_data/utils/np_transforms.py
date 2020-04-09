@@ -31,8 +31,7 @@ class ToTensor():
     def __call__(self, x):
         if self.add_dim:
             return torch.tensor(x, dtype=self.type).unsqueeze(0)
-        else:
-            return torch.tensor(x, dtype=self.type)
+        return torch.tensor(x, dtype=self.type)
 
 
 class Resize():
