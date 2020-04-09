@@ -40,7 +40,7 @@ class FPNModel(LightningModule):
         loader = DataLoader(
             dataset=dataset,
             batch_size=self.hparams.batch_size,
-            num_workers=0
+            num_workers=self.hparams.num_workers
         )
         return loader
 
@@ -168,5 +168,5 @@ class FPNModel(LightningModule):
         parser.add_argument('--optimizer_name', default='adam', type=str)
         parser.add_argument('--lr', default='0.01', type=float)
         parser.add_argument('--batch_size', default=16, type=int)
-        
+        parser.add_argument('--num_workers', default=2, type=int, help='num_workers in DatasetLoader')
         return parser
