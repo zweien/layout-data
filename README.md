@@ -18,7 +18,7 @@ cd layout-data
 pip install -U -e .
 ```
 
-## example
+## Example
 
 - `example` 目录下包含基本示例
   - `train.py`: 训练模型主程序
