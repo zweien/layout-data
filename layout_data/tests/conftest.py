@@ -10,13 +10,15 @@ def prepare_data_path(tmpdir_factory):
     num = 20
     shape = (200, 200)
     for subdir in ['train', 'test']:
-        subdir_path = os.path.join(tmpdir, subdir)
+        # subdir_path = os.path.join(tmpdir, subdir)
+        subdir_path = tmpdir / subdir
         os.mkdir(subdir_path)
         for i in range(num):
             u = np.random.randn(*shape)
             F = np.random.randn(*shape)
 
-            path = os.path.join(subdir_path, f'{i}.mat')
-            sio.savemat(path, {'u': u, 'F': F})
+            # path = os.path.join(subdir_path, f'{i}.mat')
+            path = subdir_path / f'{i}.mat'
+            sio.savemat(str(path), {'u': u, 'F': F})
 
     return tmpdir
