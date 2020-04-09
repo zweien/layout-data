@@ -14,7 +14,7 @@ def test_fpn_lightning(prepare_data_path):
 
     parser = ArgumentParser()
     parser = FPNModel.add_model_specific_args(parser)
-    hparams = parser.parse_args()
+    hparams, _ = parser.parse_known_args()
     hparams.gpus = 1
     hparams.data_root = path
 
