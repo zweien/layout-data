@@ -32,7 +32,8 @@ def main(hparams):
         max_epochs=hparams.max_epochs,
         gpus=hparams.gpus,
         precision=16 if hparams.use_16bit else 32,
-        val_check_interval=hparams.val_check_interval
+        val_check_interval=hparams.val_check_interval,
+        resume_from_checkpoint=hparams.resume_from_checkpoint 
     )
 
     
@@ -58,7 +59,14 @@ if __name__ == '__main__':
     parser.add_argument('--config', is_config_file=True,
                         default=False, help='config file path')
 
+
     # args
+
+    parser.add_argument(
+        '--resume_from_checkpoint',
+        type=str,
+        help='resume from checkpoint'
+    )
 
     parser.add_argument(
         '--seed',
