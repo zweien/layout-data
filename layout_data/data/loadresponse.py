@@ -17,12 +17,18 @@ from torchvision.datasets import VisionDataset
 class LoadResponse(VisionDataset):
     """Some Information about LoadResponse dataset"""
 
-    def __init__(self, root,
-                 loader, load_name='F', resp_name='u',
-                 extensions=None,
-                 transform=None, target_transform=None, is_valid_file=None):
-        super().__init__(root, transform=transform,
-                         target_transform=target_transform)
+    def __init__(
+        self,
+        root,
+        loader,
+        load_name="F",
+        resp_name="u",
+        extensions=None,
+        transform=None,
+        target_transform=None,
+        is_valid_file=None,
+    ):
+        super().__init__(root, transform=transform, target_transform=target_transform)
         self.root = root
         self.loader = loader
         self.load_name = load_name
@@ -50,8 +56,10 @@ def make_dataset(root_dir, extensions=None, is_valid_file=None):
     root_dir = os.path.expanduser(root_dir)
     if not ((extensions is None) ^ (is_valid_file is None)):
         raise ValueError(
-            "Both extensions and is_valid_file cannot be None or not None at the same time")
+            "Both extensions and is_valid_file cannot be None or not None at the same time"
+        )
     if extensions is not None:
+
         def is_valid_file(x):
             return has_allowed_extension(x, extensions)
 

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-'''
+"""
 Desc      :   Transforms.
-'''
+"""
 # File    :   np_transforms.py
 # Time    :   2020/04/06 17:24:54
 # Author  :   Zweien
@@ -14,7 +14,7 @@ import torch
 from torchvision import transforms
 
 
-class ToTensor():
+class ToTensor:
     """Transform np.array to torch.tensor
     Args:
             add_dim (bool, optional): add first dim. Defaults to True.
@@ -34,8 +34,7 @@ class ToTensor():
         return torch.tensor(x, dtype=self.type)
 
 
-class Resize():
-
+class Resize:
     def __init__(self, size):
         self.size = size
 

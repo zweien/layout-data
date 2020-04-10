@@ -8,7 +8,6 @@ from argparse import ArgumentParser
 from layout_data.models.fpn.model import FPNModel
 
 
-
 def test_fpn_lightning(prepare_data_path):
     path = prepare_data_path
 

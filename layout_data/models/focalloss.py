@@ -11,9 +11,11 @@ class FocalLoss(nn.Module):
         self.alpha = alpha
 
     def forward(self, x, target):
-        loss = - self.alpha * (1 - x) ** self.gamma * torch.log(x + 1e-8) * target - \
-               (1 - self.alpha) * x ** self.gamma * torch.log(1 - x + 1e-8) * (1 - target)
+        loss = -self.alpha * (1 - x) ** self.gamma * torch.log(x + 1e-8) * target - (
+            1 - self.alpha
+        ) * x ** self.gamma * torch.log(1 - x + 1e-8) * (1 - target)
         return loss.mean()
+
 
 # class FocalLoss(nn.Module):
 #     r"""

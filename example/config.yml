@@ -1,6 +1,6 @@
 # config
 
-# resume_from_checkpoint: 
+# resume_from_checkpoint:
 data_root: d:/work/dataset1
 batch_size: 64
 max_epochs: 20
@@ -9,12 +9,8 @@ gpus: 1
 val_check_interval: 1.0
 num_workers: 4
 
-
 mean_layout: 5000
 std_layout: 10000
 
 mean_heat: 298
 std_heat: 2
-
-
-

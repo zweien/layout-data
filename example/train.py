@@ -33,10 +33,9 @@ def main(hparams):
         gpus=hparams.gpus,
         precision=16 if hparams.use_16bit else 32,
         val_check_interval=hparams.val_check_interval,
-        resume_from_checkpoint=hparams.resume_from_checkpoint 
+        resume_from_checkpoint=hparams.resume_from_checkpoint,
     )
 
-    
     # ------------------------
     # 3 START TRAINING
     # ------------------------
@@ -47,56 +46,43 @@ def main(hparams):
     trainer.test()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # ------------------------
     # TRAINING ARGUMENTS
     # ------------------------
     # these are project-wide arguments
 
-    parser = configargparse.ArgParser(default_config_files=['config.yml'],
-                                      description='Hyper-parameters.')
-    parser.add_argument('--config', is_config_file=True,
-                        default=False, help='config file path')
-
+    parser = configargparse.ArgParser(
+        default_config_files=["config.yml"], description="Hyper-parameters."
+    )
+    parser.add_argument(
+        "--config", is_config_file=True, default=False, help="config file path"
+    )
 
     # args
 
     parser.add_argument(
-        '--resume_from_checkpoint',
-        type=str,
-        help='resume from checkpoint'
+        "--resume_from_checkpoint", type=str, help="resume from checkpoint"
+    )
+
+    parser.add_argument("--seed", type=int, default=1, help="seed")
+
+    parser.add_argument("--gpus", type=int, default=0, help="how many gpus")
+    parser.add_argument(
+        "--use_16bit", type=bool, default=False, help="use 16bit precision"
     )
 
     parser.add_argument(
-        '--seed',
-        type=int,
-        default=1,
-        help='seed'
-    )
-
-    parser.add_argument(
-        '--gpus',
-        type=int,
-        default=0,
-        help='how many gpus'
-    )
-    parser.add_argument(
-        '--use_16bit',
-        type=bool,
-        default=False,
-        help='use 16bit precision'
-    )
-
-    parser.add_argument(
-        '--val_check_interval',
+        "--val_check_interval",
         type=float,
         default=1,
-        help='how often within one training epoch to check the validation set'
+        help="how often within one training epoch to check the validation set",
     )
 
-    parser.add_argument('--test_args', action='store_true',
-                        default=False, help='print args')
+    parser.add_argument(
+        "--test_args", action="store_true", default=False, help="print args"
+    )
 
     parser = FPNModel.add_model_specific_args(parser)
     hparams = parser.parse_args()

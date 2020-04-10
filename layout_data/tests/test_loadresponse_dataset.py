@@ -13,8 +13,8 @@ def generate_data(dir_path, num, shape):
     for i in range(num):
         u = np.random.randn(*shape)
         F = np.random.randn(*shape)
-        path = os.path.join(dir_path, f'{i}.mat')
-        sio.savemat(path, {'u': u, 'F': F})
+        path = os.path.join(dir_path, f"{i}.mat")
+        sio.savemat(path, {"u": u, "F": F})
 
 
 def test_LoadResponse(tmp_path):
@@ -24,18 +24,21 @@ def test_LoadResponse(tmp_path):
     generate_data(tmp_path, num, shape)
     assert len(os.listdir(tmp_path)) == num
 
-    trms = Compose([
-        Resize(size=converted_shape),
-        ToTensor(),
-        Normalize(torch.tensor([0.5]), torch.tensor([1.])),
-    ])
-    dataset = LoadResponse(tmp_path, mat_loader,
-                           extensions=('mat'),
-                           transform=trms,
-                           target_transform=trms)
+    trms = Compose(
+        [
+            Resize(size=converted_shape),
+            ToTensor(),
+            Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
+        ]
+    )
+    dataset = LoadResponse(
+        tmp_path, mat_loader, extensions=("mat"), transform=trms, target_transform=trms
+    )
     assert len(dataset) == num
 
-    data_train, data_val = train_test_split(dataset, train_size=0.8)  # train/val data split
+    data_train, data_val = train_test_split(
+        dataset, train_size=0.8
+    )  # train/val data split
 
     assert len(data_train) == 8
     assert len(data_val) == 2
