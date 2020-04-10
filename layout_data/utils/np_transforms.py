@@ -7,8 +7,6 @@ Desc      :   Transforms.
 # Author  :   Zweien
 # Contact :   278954153@qq.com
 
-
-import numpy as np
 import cv2
 import torch
 from torchvision import transforms
@@ -18,11 +16,11 @@ class ToTensor:
     """Transform np.array to torch.tensor
     Args:
             add_dim (bool, optional): add first dim. Defaults to True.
-            type_ (torch.dtype, optional): dtype of the tensor. Defaults to tensor.torch.float32.
+            type_ (torch.dtype, optional): dtype of the tensor.
+                Defaults to tensor.torch.float32.
     Returns:
         torch.tensor: tensor
     """
-
     def __init__(self, add_dim=True, type_=torch.float32):
 
         self.add_dim = add_dim

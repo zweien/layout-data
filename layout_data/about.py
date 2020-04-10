@@ -7,7 +7,6 @@ Desc      :   About layout-data.
 # Author  :   Zweien
 # Contact :   278954153@qq.com
 
-
 __version__ = "0.0.2"
 __author__ = "Zweien"
 __licence__ = "MIT"

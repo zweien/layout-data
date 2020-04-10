@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -9,9 +8,11 @@ class Conv3x3GNReLU(nn.Module):
         super().__init__()
         self.upsample = upsample
         self.block = nn.Sequential(
-            nn.Conv2d(
-                in_channels, out_channels, (3, 3), stride=1, padding=1, bias=False
-            ),
+            nn.Conv2d(in_channels,
+                      out_channels, (3, 3),
+                      stride=1,
+                      padding=1,
+                      bias=False),
             nn.GroupNorm(32, out_channels),
             nn.ReLU(inplace=True),
         )
@@ -19,20 +20,28 @@ class Conv3x3GNReLU(nn.Module):
     def forward(self, x, size):
         x = self.block(x)
         if self.upsample:
-            x = F.interpolate(x, size=size, mode="bilinear", align_corners=True)
+            x = F.interpolate(x,
+                              size=size,
+                              mode="bilinear",
+                              align_corners=True)
         return x
 
 
 class FPNBlock(nn.Module):
     def __init__(self, pyramid_channels, skip_channels):
         super().__init__()
-        self.skip_conv = nn.Conv2d(skip_channels, pyramid_channels, kernel_size=1)
+        self.skip_conv = nn.Conv2d(skip_channels,
+                                   pyramid_channels,
+                                   kernel_size=1)
 
     def forward(self, x):
         x, skip = x
 
         # x = F.interpolate(x, scale_factor=2, mode='nearest')
-        x = F.interpolate(x, size=skip.size()[-2:], mode="bilinear", align_corners=True)
+        x = F.interpolate(x,
+                          size=skip.size()[-2:],
+                          mode="bilinear",
+                          align_corners=True)
         skip = self.skip_conv(skip)
 
         x = x + skip
@@ -44,14 +53,15 @@ class SegmentationBlock(nn.Module):
         super().__init__()
 
         self.blocks = [
-            Conv3x3GNReLU(in_channels, out_channels, upsample=bool(n_upsamples))
+            Conv3x3GNReLU(in_channels,
+                          out_channels,
+                          upsample=bool(n_upsamples))
         ]
 
         if n_upsamples > 1:
             for _ in range(1, n_upsamples):
                 self.blocks.append(
-                    Conv3x3GNReLU(out_channels, out_channels, upsample=True)
-                )
+                    Conv3x3GNReLU(out_channels, out_channels, upsample=True))
 
         self.blocks_name = []
         for i, block in enumerate(self.blocks):
@@ -78,31 +88,32 @@ class FPNDecoder(nn.Module):
     ):
         super().__init__()
         self.final_upsampling = final_upsampling
-        self.conv1 = nn.Conv2d(
-            encoder_channels[0], pyramid_channels, kernel_size=(1, 1)
-        )
+        self.conv1 = nn.Conv2d(encoder_channels[0],
+                               pyramid_channels,
+                               kernel_size=(1, 1))
 
         self.p4 = FPNBlock(pyramid_channels, encoder_channels[1])
         self.p3 = FPNBlock(pyramid_channels, encoder_channels[2])
         self.p2 = FPNBlock(pyramid_channels, encoder_channels[3])
 
-        self.s5 = SegmentationBlock(
-            pyramid_channels, segmentation_channels, n_upsamples=3
-        )
-        self.s4 = SegmentationBlock(
-            pyramid_channels, segmentation_channels, n_upsamples=2
-        )
-        self.s3 = SegmentationBlock(
-            pyramid_channels, segmentation_channels, n_upsamples=1
-        )
-        self.s2 = SegmentationBlock(
-            pyramid_channels, segmentation_channels, n_upsamples=0
-        )
+        self.s5 = SegmentationBlock(pyramid_channels,
+                                    segmentation_channels,
+                                    n_upsamples=3)
+        self.s4 = SegmentationBlock(pyramid_channels,
+                                    segmentation_channels,
+                                    n_upsamples=2)
+        self.s3 = SegmentationBlock(pyramid_channels,
+                                    segmentation_channels,
+                                    n_upsamples=1)
+        self.s2 = SegmentationBlock(pyramid_channels,
+                                    segmentation_channels,
+                                    n_upsamples=0)
 
         self.dropout = nn.Dropout2d(p=dropout, inplace=True)
-        self.final_conv = nn.Conv2d(
-            segmentation_channels, final_channels, kernel_size=1, padding=0
-        )
+        self.final_conv = nn.Conv2d(segmentation_channels,
+                                    final_channels,
+                                    kernel_size=1,
+                                    padding=0)
 
     def forward(self, x):
         # c5, c4, c3, c2, _ = x
@@ -113,7 +124,10 @@ class FPNDecoder(nn.Module):
         p3 = self.p3([p4, c3])
         p2 = self.p2([p3, c2])
 
-        s5 = self.s5(p5, sizes=[c4.size()[-2:], c3.size()[-2:], c2.size()[-2:]])
+        s5 = self.s5(p5,
+                     sizes=[c4.size()[-2:],
+                            c3.size()[-2:],
+                            c2.size()[-2:]])
         s4 = self.s4(p4, sizes=[c3.size()[-2:], c2.size()[-2:]])
         s3 = self.s3(p3, sizes=[c2.size()[-2:]])
         s2 = self.s2(p2, sizes=[c2.size()[-2:]])

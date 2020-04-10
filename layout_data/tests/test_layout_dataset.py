@@ -1,11 +1,10 @@
-import pytest
 import os
-from pathlib import Path
 import numpy as np
 import scipy.io as sio
 import torch
 from layout_data.data.layout import LayoutDataset
-from layout_data.utils.np_transforms import Compose, Resize, ToTensor, Normalize
+from layout_data.utils.np_transforms import (Compose, Resize, ToTensor,
+                                             Normalize)
 
 
 def generate_data(dir_path, num, shape):
@@ -29,19 +28,20 @@ def test_layout_dataset(tmp_path):
     train_path = os.path.join(tmp_path, "train")
     assert len(os.listdir(train_path)) == num
 
-    trms = Compose(
-        [
-            Resize(size=converted_shape),
-            ToTensor(),
-            Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
-        ]
-    )
-    dataset = LayoutDataset(tmp_path, train=True, transform=trms, target_transform=trms)
+    trms = Compose([
+        Resize(size=converted_shape),
+        ToTensor(),
+        Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
+    ])
+    dataset = LayoutDataset(tmp_path,
+                            train=True,
+                            transform=trms,
+                            target_transform=trms)
     assert len(dataset) == num
 
     load, resp = dataset[0]
 
     assert isinstance(load, torch.Tensor)
-    assert load.shape == (1,) + converted_shape
-    assert resp.shape == (1,) + converted_shape
+    assert load.shape == (1, ) + converted_shape
+    assert resp.shape == (1, ) + converted_shape
     assert abs(load.mean().item() + 0.5) < 0.1  # test mean

@@ -1,9 +1,4 @@
-import pytest
 import math
-import numpy as np
-import os
-import scipy.io as sio
-from pathlib import Path
 from argparse import ArgumentParser
 from layout_data.models.fpn.model import FPNModel
 

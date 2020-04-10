@@ -12,7 +12,6 @@ from ..scheduler import WarmupMultiStepLR
 from pytorch_lightning import LightningModule
 from layout_data.data.layout import LayoutDataset
 import layout_data.utils.np_transforms as transforms
-from sklearn.model_selection import train_test_split
 
 
 class FPNModel(LightningModule):
@@ -49,7 +48,8 @@ class FPNModel(LightningModule):
         scheduler = WarmupMultiStepLR(
             optimizer,
             milestones=[],
-            warmup_iters=math.ceil(len(self.train_dataset) / self.hparams.batch_size),
+            warmup_iters=math.ceil(
+                len(self.train_dataset) / self.hparams.batch_size),
         )
         return [optimizer], [scheduler]
 
@@ -57,26 +57,22 @@ class FPNModel(LightningModule):
         """Prepare dataset
         """
         size: int = self.hparams.input_size
-        transform_layout = transforms.Compose(
-            [
-                transforms.Resize(size=(size, size)),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    torch.tensor([self.hparams.mean_layout]),
-                    torch.tensor([self.hparams.std_layout]),
-                ),
-            ]
-        )
-        transform_heat = transforms.Compose(
-            [
-                transforms.Resize(size=(size, size)),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    torch.tensor([self.hparams.mean_heat]),
-                    torch.tensor([self.hparams.std_heat]),
-                ),
-            ]
-        )
+        transform_layout = transforms.Compose([
+            transforms.Resize(size=(size, size)),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                torch.tensor([self.hparams.mean_layout]),
+                torch.tensor([self.hparams.std_layout]),
+            ),
+        ])
+        transform_heat = transforms.Compose([
+            transforms.Resize(size=(size, size)),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                torch.tensor([self.hparams.mean_heat]),
+                torch.tensor([self.hparams.std_heat]),
+            ),
+        ])
         train_dataset = LayoutDataset(
             self.hparams.data_root,
             train=True,
@@ -94,12 +90,10 @@ class FPNModel(LightningModule):
         train_size = int(self.hparams.train_size * len(train_dataset))
         lengths = [train_size, len(train_dataset) - train_size]
         train_dataset, val_dataset = torch.utils.data.random_split(
-            train_dataset, lengths
-        )
+            train_dataset, lengths)
 
-        print(
-            f"Prepared dataset, train:{len(train_dataset)}, val:{len(val_dataset)}, test:{len(test_dataset)}"
-        )
+        print(f"Prepared dataset, train:{len(train_dataset)},\
+                val:{len(val_dataset)}, test:{len(test_dataset)}")
 
         # assign to use in dataloaders
         self.train_dataset = train_dataset
@@ -122,15 +116,15 @@ class FPNModel(LightningModule):
         log = {"training_loss": loss}
 
         if batch_idx == 0:
-            grid = torchvision.utils.make_grid(heat_pred[:4, ...], normalize=True)
-            self.logger.experiment.add_image(
-                "train_pred_heat_field", grid, self.global_step
-            )
+            grid = torchvision.utils.make_grid(heat_pred[:4, ...],
+                                               normalize=True)
+            self.logger.experiment.add_image("train_pred_heat_field", grid,
+                                             self.global_step)
             if self.global_step == 0:
-                grid = torchvision.utils.make_grid(heat[:4, ...], normalize=True)
-                self.logger.experiment.add_image(
-                    "train_heat_field", grid, self.global_step
-                )
+                grid = torchvision.utils.make_grid(heat[:4, ...],
+                                                   normalize=True)
+                self.logger.experiment.add_image("train_heat_field", grid,
+                                                 self.global_step)
 
         return {"loss": loss, "log": log}
 
@@ -141,15 +135,18 @@ class FPNModel(LightningModule):
 
         # pred heat field
         grid = torchvision.utils.make_grid(heat_pred[:4, ...], normalize=True)
-        self.logger.experiment.add_image("val_pred_heat_field", grid, self.global_step)
+        self.logger.experiment.add_image("val_pred_heat_field", grid,
+                                         self.global_step)
 
         # true layoutand heat field
         if self.global_step == 0 and batch_idx == 0:
             grid = torchvision.utils.make_grid(heat[:4, ...], normalize=True)
-            self.logger.experiment.add_image("val_heat_field", grid, self.global_step)
+            self.logger.experiment.add_image("val_heat_field", grid,
+                                             self.global_step)
 
             grid = torchvision.utils.make_grid(layout[:4, ...], normalize=True)
-            self.logger.experiment.add_image("val_layout_field", grid, self.global_step)
+            self.logger.experiment.add_image("val_layout_field", grid,
+                                             self.global_step)
 
         return {"val_loss": loss}
 
@@ -172,7 +169,8 @@ class FPNModel(LightningModule):
     @staticmethod
     def add_model_specific_args(parser):  # pragma: no-cover
         """
-        Parameters you define here will be available to your model through `self.hparams`.
+        Parameters you define here will be available to your model
+        through `self.hparams`.
         """
         parser = parser
 
@@ -198,7 +196,8 @@ class FPNModel(LightningModule):
         parser.add_argument("--optimizer_name", default="adam", type=str)
         parser.add_argument("--lr", default="0.01", type=float)
         parser.add_argument("--batch_size", default=16, type=int)
-        parser.add_argument(
-            "--num_workers", default=2, type=int, help="num_workers in DatasetLoader"
-        )
+        parser.add_argument("--num_workers",
+                            default=2,
+                            type=int,
+                            help="num_workers in DatasetLoader")
         return parser

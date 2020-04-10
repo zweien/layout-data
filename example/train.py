@@ -1,8 +1,6 @@
 """
 Runs a model on a single node across multiple gpus.
 """
-import os
-from argparse import ArgumentParser
 import configargparse
 import numpy as np
 import torch
