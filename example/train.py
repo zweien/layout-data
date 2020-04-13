@@ -32,7 +32,7 @@ def main(hparams):
         precision=16 if hparams.use_16bit else 32,
         val_check_interval=hparams.val_check_interval,
         resume_from_checkpoint=hparams.resume_from_checkpoint,
-        # profiler=True,
+        profiler=hparams.profiler,
     )
 
     # ------------------------
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     )
 
     # args
-
+    parser.add_argument("--max_epochs", default=20, type=int)
     parser.add_argument(
         "--resume_from_checkpoint", type=str, help="resume from checkpoint"
     )
@@ -80,7 +80,11 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--test_args", action="store_true", default=False, help="print args"
+        "--profiler", action="store_true", help="use profiler"
+    )
+
+    parser.add_argument(
+        "--test_args", action="store_true", help="print args"
     )
 
     parser = FPNModel.add_model_specific_args(parser)

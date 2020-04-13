@@ -196,7 +196,6 @@ class FPNModel(LightningModule):
         parser.add_argument("--std_heat", default=1, type=float)
 
         # training params (opt)
-        parser.add_argument("--max_epochs", default=20, type=int)
         parser.add_argument("--optimizer_name", default="adam", type=str)
         parser.add_argument("--lr", default="0.01", type=float)
         parser.add_argument("--batch_size", default=16, type=int)
