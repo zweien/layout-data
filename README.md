@@ -27,3 +27,5 @@ pip install -U -e .
   - `data_dir` 为数据集目录，该目录下应包含 `train` 与 `test` 子目录， 使用 [layout-generator](https://git.idrl.site/idrl/layout-generator) 生成相应数据
 - `python train.py --config config.yml` 开始训练
 - 默认使用 `tensorboard` 记录中间训练数据
+
+结果请参考 [example](example/README.md)
