@@ -32,6 +32,7 @@ def main(hparams):
         precision=16 if hparams.use_16bit else 32,
         val_check_interval=hparams.val_check_interval,
         resume_from_checkpoint=hparams.resume_from_checkpoint,
+        # profiler=True,
     )
 
     # ------------------------
