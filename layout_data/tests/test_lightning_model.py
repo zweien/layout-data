@@ -4,7 +4,7 @@ from layout_data.models.fpn.model import FPNModel
 
 
 def test_fpn_lightning(prepare_data_path):
-    path = prepare_data_path
+    path, num, shape = prepare_data_path
 
     parser = ArgumentParser()
     parser = FPNModel.add_model_specific_args(parser)
@@ -18,8 +18,8 @@ def test_fpn_lightning(prepare_data_path):
     dataloader = model.train_dataloader()
 
     F, u = next(iter(dataloader))
-    assert u.shape == (hparams.batch_size, 1, 200, 200)
+    assert u.shape == (hparams.batch_size, 1, *shape)
     u_pred = model(F)
-    assert u_pred.shape == (hparams.batch_size, 1, 200, 200)
+    assert u_pred.shape == (hparams.batch_size, 1, *shape)
 
     assert not math.isnan(u_pred.sum().item())

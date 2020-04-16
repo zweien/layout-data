@@ -9,11 +9,13 @@ Desc      :   Load Response Dataset.
 
 import os
 import scipy.io as sio
+import h5py
 from torchvision.datasets import VisionDataset
 
 
 class LoadResponse(VisionDataset):
     """Some Information about LoadResponse dataset"""
+
     def __init__(
         self,
         root,
@@ -25,10 +27,9 @@ class LoadResponse(VisionDataset):
         target_transform=None,
         is_valid_file=None,
     ):
-        super().__init__(root,
-                         transform=transform,
-                         target_transform=target_transform)
-        self.root = root
+        super().__init__(
+            root, transform=transform, target_transform=target_transform
+        )
         self.loader = loader
         self.load_name = load_name
         self.resp_name = resp_name
@@ -48,14 +49,56 @@ class LoadResponse(VisionDataset):
         return len(self.sample_files)
 
 
+class LoadResponseH5(VisionDataset):
+    def __init__(
+        self,
+        root,
+        load_name="F",
+        resp_name="u",
+        transform=None,
+        target_transform=None,
+    ):
+        super().__init__(
+            root, transform=transform, target_transform=target_transform,
+        )
+        self.load_name = load_name
+        self.resp_name = resp_name
+        self.data_info = self._get_info(root)
+
+    def _get_info(self, path):
+        """get h5 info
+        """
+        data_info = {}
+        with h5py.File(path, "r") as file:
+            for key, value in file.items():
+                _len, *shape = value.shape
+                data_info[key] = {"len": _len, "shape": shape}
+        return data_info
+
+    def __getitem__(self, index):
+        with h5py.File(self.root, "r") as file:
+            load = file[self.load_name][index]
+            resp = file[self.resp_name][index]
+        if self.transform is not None:
+            load = self.transform(load)
+        if self.target_transform is not None:
+            resp = self.target_transform(resp)
+        return load, resp
+
+    def __len__(self):
+        return self.data_info[self.load_name]['len']
+
+
 def make_dataset(root_dir, extensions=None, is_valid_file=None):
     """make_dataset() from torchvision.
     """
     files = []
     root_dir = os.path.expanduser(root_dir)
     if not ((extensions is None) ^ (is_valid_file is None)):
-        raise ValueError("Both extensions and is_valid_file \
-                cannot be None or not None at the same time")
+        raise ValueError(
+            "Both extensions and is_valid_file \
+                cannot be None or not None at the same time"
+        )
     if extensions is not None:
 
         def is_valid_file(x):

@@ -1,49 +1,75 @@
-import os
-import numpy as np
-import scipy.io as sio
 import torch
-from layout_data.data.loadresponse import LoadResponse, mat_loader
-from layout_data.utils.np_transforms import (Compose, Resize, ToTensor,
-                                             Normalize)
+from layout_data.data.loadresponse import (
+    LoadResponse,
+    mat_loader,
+    LoadResponseH5,
+)
+from layout_data.utils.np_transforms import (
+    Compose,
+    Resize,
+    ToTensor,
+    Normalize,
+)
 from sklearn.model_selection import train_test_split
+from layout_data.utils.convert import mat2h5
 
 
-def generate_data(dir_path, num, shape):
-    for i in range(num):
-        u = np.random.randn(*shape)
-        F = np.random.randn(*shape)
-        path = os.path.join(dir_path, f"{i}.mat")
-        sio.savemat(path, {"u": u, "F": F})
-
-
-def test_LoadResponse(tmp_path):
-    num = 10
-    shape = (200, 200)
+def test_LoadResponseH5(prepare_data_path):
+    tmp_path, num, shape = prepare_data_path
     converted_shape = (64, 64)
-    generate_data(tmp_path, num, shape)
-    assert len(os.listdir(tmp_path)) == num
+    tmp_path = tmp_path / "train"
+    h5_path = tmp_path / "h5.h5"
+    mat2h5(tmp_path, h5_path)
+    trms = Compose(
+        [
+            Resize(size=converted_shape),
+            ToTensor(),
+            Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
+        ]
+    )
+    dsh5 = LoadResponseH5(h5_path, transform=trms, target_transform=trms)
+    assert len(dsh5) == num
 
-    trms = Compose([
-        Resize(size=converted_shape),
-        ToTensor(),
-        Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
-    ])
-    dataset = LoadResponse(tmp_path,
-                           mat_loader,
-                           extensions=("mat"),
-                           transform=trms,
-                           target_transform=trms)
+    load, resp = dsh5[0]
+
+    assert isinstance(load, torch.Tensor)
+    assert load.shape == (1,) + converted_shape
+    assert resp.shape == (1,) + converted_shape
+    assert abs(load.mean().item() + 0.5) < 0.1  # test mean
+
+
+def test_LoadResponse(prepare_data_path):
+    tmp_path, num, shape = prepare_data_path
+    tmp_path = tmp_path / "train"
+    converted_shape = (64, 64)
+
+    trms = Compose(
+        [
+            Resize(size=converted_shape),
+            ToTensor(),
+            Normalize(torch.tensor([0.5]), torch.tensor([1.0])),
+        ]
+    )
+    dataset = LoadResponse(
+        tmp_path,
+        mat_loader,
+        extensions=("mat"),
+        transform=trms,
+        target_transform=trms,
+    )
     assert len(dataset) == num
 
+    train_size = 0.8
     data_train, data_val = train_test_split(
-        dataset, train_size=0.8)  # train/val data split
+        dataset, train_size=train_size
+    )  # train/val data split
 
-    assert len(data_train) == 8
-    assert len(data_val) == 2
+    assert len(data_train) == int(train_size * num)
+    assert len(data_val) == int(num - train_size * num)
 
     load, resp = data_train[0]
 
     assert isinstance(load, torch.Tensor)
-    assert load.shape == (1, ) + converted_shape
-    assert resp.shape == (1, ) + converted_shape
+    assert load.shape == (1,) + converted_shape
+    assert resp.shape == (1,) + converted_shape
     assert abs(load.mean().item() + 0.5) < 0.1  # test mean
