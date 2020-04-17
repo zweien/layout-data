@@ -12,10 +12,10 @@
 #
 import os
 import sys
-import layout_data.about as about
 
 sys.path.insert(0, os.path.abspath("../.."))
 print(sys.path)
+import layout_data.about as about
 
 
 # -- Project information -----------------------------------------------------
