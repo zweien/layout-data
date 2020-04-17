@@ -8,3 +8,4 @@ torchvision>=0.5
 pytorch-lightning>=0.7
 opencv-python
 scikit-learn>=0.20
+h5py
