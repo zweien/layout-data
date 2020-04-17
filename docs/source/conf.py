@@ -12,11 +12,11 @@
 #
 import os
 import sys
+import layout_data.about as about
 
 sys.path.insert(0, os.path.abspath("../.."))
 print(sys.path)
 
-import layout_data.about as about
 
 # -- Project information -----------------------------------------------------
 
@@ -80,8 +80,8 @@ autodoc_mock_imports = [
     "torch",
     "torchvision",
     "pytorch_lightning",
+    "h5py"
 ]
 
 
 master_doc = "index"
-
