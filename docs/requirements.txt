@@ -8,4 +8,3 @@ configargparse
 pyyaml
 opencv-python
 scikit-learn>=0.20
-h5py

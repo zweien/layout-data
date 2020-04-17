@@ -12,7 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+
+sys.path.insert(0, os.path.abspath("../.."))
 print(sys.path)
 
 import layout_data.about as about
@@ -35,7 +36,7 @@ release = about.__version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
-    'sphinx.ext.viewcode',
+    "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "recommonmark",
@@ -78,7 +79,9 @@ source_suffix = {
 autodoc_mock_imports = [
     "torch",
     "torchvision",
-    "numpy",
-    "scipy",
-    "pytorch_lightning"]
+    "pytorch_lightning",
+]
+
+
+master_doc = "index"
 
