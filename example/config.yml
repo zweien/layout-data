@@ -1,8 +1,8 @@
 # config
 
 # resume_from_checkpoint:
-data_root: d:/work/dataset1
-batch_size: 64
+data_root: d:/work/fenics_project/dataset1
+batch_size: 16
 max_epochs: 20
 lr: 0.001
 gpus: 1
