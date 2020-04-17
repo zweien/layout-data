@@ -15,12 +15,12 @@ from torchvision import transforms
 class ToTensor:
     """Transform np.array to torch.tensor
     Args:
-            add_dim (bool, optional): add first dim. Defaults to True.
-            type_ (torch.dtype, optional): dtype of the tensor.
-                Defaults to tensor.torch.float32.
+        add_dim (bool, optional): add first dim. Defaults to True.
+        type_ (torch.dtype, optional): dtype of the tensor. Defaults to tensor.torch.float32.
     Returns:
         torch.tensor: tensor
     """
+
     def __init__(self, add_dim=True, type_=torch.float32):
 
         self.add_dim = add_dim

@@ -12,7 +12,7 @@ def mat2h5(mat_dir, h5_path, keys=("F", "u", "list"), worker=1):
     Args:
         mat_dir (str): mat file dir
         h5_path (str): hdf5 file path
-        key (tuple, optional): [description]. Defaults to ("F", "u", "list").
+        keys (tuple, optional): keys in mat. Defaults to ("F", "u", "list").
     """
     mat_dir = Path(mat_dir)
     assert mat_dir.is_dir(), "mat_dir must be dir path!"
