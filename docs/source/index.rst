@@ -10,6 +10,7 @@ Welcome to layout-data's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   Example<example_README>
    modules
    a.md
 
