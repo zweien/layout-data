@@ -4,6 +4,8 @@
 ![Python package](https://github.com/zweien/layout-data/workflows/Python%20package/badge.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/zweien/layout-data/badge)](https://www.codefactor.io/repository/github/zweien/layout-data)
 [![codecov](https://codecov.io/gh/zweien/layout-data/branch/master/graph/badge.svg)](https://codecov.io/gh/zweien/layout-data)
+[![readthedocs](https://readthedocs.org/projects/layout-data/badge/)](https://layout-data.readthedocs.io/zh/latest/)
+[![GitLicense](https://gitlicense.com/badge/zweien/layout-data)](https://gitlicense.com/license/zweien/layout-data)
 
 [layout-generator](https://git.idrl.site/idrl/layout-generator) 生成数据集配套 Dataset 封装，包含 [pytorch-lightning](https://github.com/PytorchLightning/pytorch-lightning) 封装的 FPN 模型，可以方便的配置参数。
 
