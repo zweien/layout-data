@@ -23,13 +23,13 @@
 | value | config.yml | None                   | 1    | 1    | FALSE     | 1                  | FALSE     | d:/work/dataset1 | 0.8        | 0.2       | 200        | 5000        | 10000      | 298       | 2        | 200        | adam           | 0.001 | 64         | 4           |
 
 - loss
+  
+![20200418125753](https://i.loli.net/2020/04/18/8wpI7kWecGbslXU.png)
+![20200418130347](https://i.loli.net/2020/04/18/LEd9aq7GNyPXUWm.png)
 
-![](ex_fig/train_loss.png)
-![](ex_fig/val_loss.png)
+* image
 
-- image
-
-![](ex_fig/train_heat_field.png)
-![](ex_fig/tran_pred_heat_field.png)
-![](ex_fig/val_heat_field.png)
-![](ex_fig/val_pred_heat_field.png)
+![20200418130456](https://i.loli.net/2020/04/18/xb6NIBY3HCfZ2lD.png)
+![20200418130432](https://i.loli.net/2020/04/18/tAMjwzPT7YHDkVp.png)
+![20200418130527](https://i.loli.net/2020/04/18/t9QcAh1ReLCkKSg.png)
+![20200418130544](https://i.loli.net/2020/04/18/s4xvPZqIyDrNBAL.png)
