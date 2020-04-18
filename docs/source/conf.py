@@ -14,7 +14,6 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../.."))
-print(sys.path)
 import layout_data.about as about
 
 
@@ -73,7 +72,6 @@ html_static_path = ["_static"]
 
 source_suffix = {
     ".rst": "restructuredtext",
-    ".txt": "markdown",
     ".md": "markdown",
 }
 
