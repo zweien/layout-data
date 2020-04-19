@@ -31,7 +31,8 @@ setup(
             "recommonmark",
             "sphinx-rtd-theme",
             "sphinx_markdown_tables",
-        ]
+        ],
+        "dev": ["pytest", "pytest-cov"],
     },
     include_package_data=True,
     python_requires=">=3.6",
