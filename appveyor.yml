@@ -1,14 +1,15 @@
 # appveyor.yml
----
-    environment:
-      matrix:
-      - TOXENV: py3.6
-      - TOXENV: py3.7
-    
-    build: off
-    
-    install:
+image:
+    - Visual Studio 2019
+environment:
+    matrix:
+        - TOXENV: py3.6
+        - TOXENV: py3.7
+
+build: off
+
+install:
     - pip install tox
-    
-    test_script:
+
+test_script:
     - tox
