@@ -2,6 +2,7 @@
 Runs a model on a single node across multiple gpus.
 """
 import configargparse
+from pathlib import Path
 import numpy as np
 import torch
 from torch.backends import cudnn
@@ -51,7 +52,11 @@ if __name__ == "__main__":
     # TRAINING ARGUMENTS
     # ------------------------
     # these are project-wide arguments
-
+    config_path = Path(__file__).absolute().parent / "config.yml"
+    parser = configargparse.ArgParser(
+        default_config_files=[str(config_path)],
+        description="Hyper-parameters.",
+    )
     parser = configargparse.ArgParser(
         default_config_files=["config.yml"], description="Hyper-parameters."
     )
@@ -79,13 +84,9 @@ if __name__ == "__main__":
         help="how often within one training epoch to check the validation set",
     )
 
-    parser.add_argument(
-        "--profiler", action="store_true", help="use profiler"
-    )
+    parser.add_argument("--profiler", action="store_true", help="use profiler")
 
-    parser.add_argument(
-        "--test_args", action="store_true", help="print args"
-    )
+    parser.add_argument("--test_args", action="store_true", help="print args")
 
     parser = FPNModel.add_model_specific_args(parser)
     hparams = parser.parse_args()
