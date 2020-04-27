@@ -1,0 +1,7 @@
+action: py3.6, msg: getenv
+cwd: D:\work\layout-data\.tox
+cmd: 'c:\programdata\anaconda3\python.exe' -m virtualenv --no-download --python 'c:\programdata\anaconda3\python.exe' py3.6
+created virtual environment CPython3.7.3.final.0-64 in 4586ms
+  creator CPython3Windows(dest=D:\work\layout-data\.tox\py3.6, clear=False, global=False)
+  seeder FromAppData(download=False, pip=latest, setuptools=latest, wheel=latest, via=copy, app_data_dir=C:\Users\z\AppData\Local\Temp\tmpi0_bci8w\seed-app-data\v1)
+  activators BashActivator,BatchActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator

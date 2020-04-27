@@ -1,0 +1,102 @@
+action: GLOB, msg: packaging
+cwd: D:\work\layout-data
+cmd: 'c:\programdata\anaconda3\python.exe' setup.py sdist --formats=zip --dist-dir 'D:\work\layout-data\.tox\dist'
+running sdist
+running egg_info
+writing layout_data.egg-info\PKG-INFO
+writing dependency_links to layout_data.egg-info\dependency_links.txt
+writing requirements to layout_data.egg-info\requires.txt
+writing top-level names to layout_data.egg-info\top_level.txt
+reading manifest file 'layout_data.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'layout_data.egg-info\SOURCES.txt'
+running check
+warning: Check: missing required meta-data: url
+
+warning: Check: missing meta-data: if 'author' supplied, 'author_email' must be supplied too
+
+creating layout-data-0.0.2
+creating layout-data-0.0.2\layout_data
+creating layout-data-0.0.2\layout_data.egg-info
+creating layout-data-0.0.2\layout_data\data
+creating layout-data-0.0.2\layout_data\models
+creating layout-data-0.0.2\layout_data\models\fpn
+creating layout-data-0.0.2\layout_data\utils
+creating layout-data-0.0.2\tests
+copying files to layout-data-0.0.2...
+copying MANIFEST.in -> layout-data-0.0.2
+copying README.md -> layout-data-0.0.2
+copying requirements.txt -> layout-data-0.0.2
+copying setup.py -> layout-data-0.0.2
+copying layout_data\__init__.py -> layout-data-0.0.2\layout_data
+copying layout_data\about.py -> layout-data-0.0.2\layout_data
+copying layout_data.egg-info\PKG-INFO -> layout-data-0.0.2\layout_data.egg-info
+copying layout_data.egg-info\SOURCES.txt -> layout-data-0.0.2\layout_data.egg-info
+copying layout_data.egg-info\dependency_links.txt -> layout-data-0.0.2\layout_data.egg-info
+copying layout_data.egg-info\requires.txt -> layout-data-0.0.2\layout_data.egg-info
+copying layout_data.egg-info\top_level.txt -> layout-data-0.0.2\layout_data.egg-info
+copying layout_data\data\__init__.py -> layout-data-0.0.2\layout_data\data
+copying layout_data\data\layout.py -> layout-data-0.0.2\layout_data\data
+copying layout_data\data\loadresponse.py -> layout-data-0.0.2\layout_data\data
+copying layout_data\models\__init__.py -> layout-data-0.0.2\layout_data\models
+copying layout_data\models\focalloss.py -> layout-data-0.0.2\layout_data\models
+copying layout_data\models\scheduler.py -> layout-data-0.0.2\layout_data\models
+copying layout_data\models\fpn\__init__.py -> layout-data-0.0.2\layout_data\models\fpn
+copying layout_data\models\fpn\fpn_head.py -> layout-data-0.0.2\layout_data\models\fpn
+copying layout_data\models\fpn\model.py -> layout-data-0.0.2\layout_data\models\fpn
+copying layout_data\models\fpn\model_init.py -> layout-data-0.0.2\layout_data\models\fpn
+copying layout_data\models\fpn\resnet.py -> layout-data-0.0.2\layout_data\models\fpn
+copying layout_data\utils\__init__.py -> layout-data-0.0.2\layout_data\utils
+copying layout_data\utils\convert.py -> layout-data-0.0.2\layout_data\utils
+copying layout_data\utils\io.py -> layout-data-0.0.2\layout_data\utils
+copying layout_data\utils\np_transforms.py -> layout-data-0.0.2\layout_data\utils
+copying tests\__init__.py -> layout-data-0.0.2\tests
+copying tests\conftest.py -> layout-data-0.0.2\tests
+copying tests\test_layout_dataset.py -> layout-data-0.0.2\tests
+copying tests\test_lightning_model.py -> layout-data-0.0.2\tests
+copying tests\test_loadresponse_dataset.py -> layout-data-0.0.2\tests
+Writing layout-data-0.0.2\setup.cfg
+creating D:\work\layout-data\.tox\dist
+creating 'D:\work\layout-data\.tox\dist\layout-data-0.0.2.zip' and adding 'layout-data-0.0.2' to it
+adding 'layout-data-0.0.2'
+adding 'layout-data-0.0.2\layout_data'
+adding 'layout-data-0.0.2\layout_data.egg-info'
+adding 'layout-data-0.0.2\tests'
+adding 'layout-data-0.0.2\MANIFEST.in'
+adding 'layout-data-0.0.2\PKG-INFO'
+adding 'layout-data-0.0.2\README.md'
+adding 'layout-data-0.0.2\requirements.txt'
+adding 'layout-data-0.0.2\setup.cfg'
+adding 'layout-data-0.0.2\setup.py'
+adding 'layout-data-0.0.2\layout_data\data'
+adding 'layout-data-0.0.2\layout_data\models'
+adding 'layout-data-0.0.2\layout_data\utils'
+adding 'layout-data-0.0.2\layout_data\about.py'
+adding 'layout-data-0.0.2\layout_data\__init__.py'
+adding 'layout-data-0.0.2\layout_data\data\layout.py'
+adding 'layout-data-0.0.2\layout_data\data\loadresponse.py'
+adding 'layout-data-0.0.2\layout_data\data\__init__.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn'
+adding 'layout-data-0.0.2\layout_data\models\focalloss.py'
+adding 'layout-data-0.0.2\layout_data\models\scheduler.py'
+adding 'layout-data-0.0.2\layout_data\models\__init__.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn\fpn_head.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn\model.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn\model_init.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn\resnet.py'
+adding 'layout-data-0.0.2\layout_data\models\fpn\__init__.py'
+adding 'layout-data-0.0.2\layout_data\utils\convert.py'
+adding 'layout-data-0.0.2\layout_data\utils\io.py'
+adding 'layout-data-0.0.2\layout_data\utils\np_transforms.py'
+adding 'layout-data-0.0.2\layout_data\utils\__init__.py'
+adding 'layout-data-0.0.2\layout_data.egg-info\dependency_links.txt'
+adding 'layout-data-0.0.2\layout_data.egg-info\PKG-INFO'
+adding 'layout-data-0.0.2\layout_data.egg-info\requires.txt'
+adding 'layout-data-0.0.2\layout_data.egg-info\SOURCES.txt'
+adding 'layout-data-0.0.2\layout_data.egg-info\top_level.txt'
+adding 'layout-data-0.0.2\tests\conftest.py'
+adding 'layout-data-0.0.2\tests\test_layout_dataset.py'
+adding 'layout-data-0.0.2\tests\test_lightning_model.py'
+adding 'layout-data-0.0.2\tests\test_loadresponse_dataset.py'
+adding 'layout-data-0.0.2\tests\__init__.py'
+removing 'layout-data-0.0.2' (and everything under it)

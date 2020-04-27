@@ -1,0 +1,31 @@
+action: py3.6, msg: getenv
+cwd: D:\work\layout-data
+cmd: 'D:\work\layout-data\.tox\py3.6\Scripts\python.EXE' -m pip install pytest
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Collecting pytest
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/c7/e2/c19c667f42f72716a7d03e8dd4d6f63f47d39feadd44cc1ee7ca3089862c/pytest-5.4.1-py3-none-any.whl (246 kB)
+Collecting packaging
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/62/0a/34641d2bf5c917c96db0ded85ae4da25b6cd922d6b794648d4e7e07c88e5/packaging-20.3-py2.py3-none-any.whl (37 kB)
+Collecting py>=1.5.0
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/99/8d/21e1767c009211a62a8e3067280bfce76e89c9f876180308515942304d2d/py-1.8.1-py2.py3-none-any.whl (83 kB)
+Collecting more-itertools>=4.0.0
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/72/96/4297306cc270eef1e3461da034a3bebe7c84eff052326b130824e98fc3fb/more_itertools-8.2.0-py3-none-any.whl (43 kB)
+Collecting colorama; sys_platform == "win32"
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/c9/dc/45cdef1b4d119eb96316b3117e6d5708a08029992b2fee2c143c7a0a5cc5/colorama-0.4.3-py2.py3-none-any.whl (15 kB)
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/ad/e4/891bfcaf868ccabc619942f27940c77a8a4b45fd8367098955bb7e152fb1/importlib_metadata-1.6.0-py2.py3-none-any.whl (30 kB)
+Collecting wcwidth
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/f6/d5/1ecdac957e3ea12c1b319fcdee8b6917ffaff8b4644d673c4d72d2f20b49/wcwidth-0.1.9-py2.py3-none-any.whl (19 kB)
+Collecting attrs>=17.4.0
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl (39 kB)
+Collecting pluggy<1.0,>=0.12
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/a0/28/85c7aa31b80d150b772fbe4a229487bc6644da9ccb7e427dd8cc60cb8a62/pluggy-0.13.1-py2.py3-none-any.whl (18 kB)
+Collecting atomicwrites>=1.0; sys_platform == "win32"
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl (5.9 kB)
+Collecting six
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/65/eb/1f97cb97bfc2390a276969c6fae16075da282f5058082d4cb10c6c5c1dba/six-1.14.0-py2.py3-none-any.whl (10 kB)
+Collecting pyparsing>=2.0.2
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/8a/bb/488841f56197b13700afd5658fc279a2025a39e22449b7cf29864669b15d/pyparsing-2.4.7-py2.py3-none-any.whl (67 kB)
+Collecting zipp>=0.5
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/b2/34/bfcb43cc0ba81f527bc4f40ef41ba2ff4080e047acb0586b56b3d017ace4/zipp-3.1.0-py3-none-any.whl (4.9 kB)
+Installing collected packages: six, pyparsing, packaging, py, more-itertools, colorama, zipp, importlib-metadata, wcwidth, attrs, pluggy, atomicwrites, pytest
