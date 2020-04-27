@@ -9,6 +9,7 @@ environment:
 build: off
 
 install:
+    - "%PYTHON%\\python.exe -m pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html"
     - "%PYTHON%\\python.exe -m pip install .[dev]"
 
 test_script:
