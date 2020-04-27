@@ -3,13 +3,13 @@ image:
     - Visual Studio 2019
 environment:
     matrix:
-        - TOXENV: py3.6
-        - TOXENV: py3.7
+        - PYTHON: "C:\\Python37-x64"
+        - PYTHON: "C:\\Python36-x64"
 
 build: off
 
 install:
-    - pip install tox
+    - "%PYTHON%\\python.exe -m pip install .[dev]"
 
 test_script:
-    - tox
+    - "%PYTHON%\\python.exe -m pytest"
